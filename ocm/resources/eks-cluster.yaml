@@ -1,0 +1,26 @@
+apiVersion: eks.aws.crossplane.io/v1beta1
+kind: Cluster
+metadata:
+  name: myeks
+  labels:
+    example: "true"
+spec:
+  forProvider:
+    region: us-west-1
+    roleArnRef:
+      name: myeksrole
+    resourcesVpcConfig:
+      publicAccessCidrs:                                                                                                                                                                                    
+      - 0.0.0.0/0
+      endpointPublicAccess: true
+      subnetIdRefs:
+        - name: myeks-vpc-subnet1
+        - name: myeks-vpc-subnet2
+    version: "1.16"
+    tags:
+      Name: myeks
+  writeConnectionSecretToRef:
+    name: cluster-conn
+    namespace: default
+  providerConfigRef:
+    name: default
