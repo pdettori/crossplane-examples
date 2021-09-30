@@ -1,0 +1,22 @@
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: klusterlet
+spec:
+  forProvider:
+    chart:
+      name: klusterlet
+      repository: https://pdettori.github.io/registration-operator/
+      version: 0.1.1
+    namespace: default
+    # set:
+    #   - name: param1
+    #     value: value2
+    valuesFrom:
+      - secretKeyRef:
+          key: values.yaml
+          name: ocm-agent-bootstrap
+          namespace: default
+          optional: false
+  providerConfigRef:
+    name: platform-ref-aws-cluster
